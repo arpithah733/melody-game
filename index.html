@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Modi & Meloni: The Melody Quest</title>
+    <meta name="description" content="A vibrant pop-art platformer game featuring Modi, Meloni, Rahul, and Ramya across Parliament Gardens, the G7 Summit, and the Cosmic Runway.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Main Game Stage Container -->
+        <div id="game-container">
+            <canvas id="gameCanvas"></canvas>
+
+            <!-- Top HUD Overlay -->
+            <header id="hud">
+                <!-- Top Left: Chocolates & Level Indicator -->
+                <div class="hud-group top-left">
+                    <div class="hud-card chocolate-card">
+                        <span id="hud-chocolate-count">🍫 x 0</span>
+                    </div>
+                    <div class="hud-card level-card">
+                        <span id="hud-level-indicator">Level 1: The Parliament Gardens</span>
+                    </div>
+                </div>
+
+                <!-- Top Center: Meloni's Impression Meter -->
+                <div class="hud-group top-center">
+                    <div class="hud-card impression-card">
+                        <div class="impression-header">
+                            <span class="impression-icon">💖</span>
+                            <span class="impression-title">Meloni's Impression</span>
+                            <span id="hud-impression-text">0% (Goal: 90%)</span>
+                        </div>
+                        <div class="impression-track">
+                            <div id="hud-impression-fill" class="impression-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Right: Timer, Mute & Restart -->
+                <div class="hud-group top-right">
+                    <div id="hud-timer-card" class="hud-card timer-card hidden">
+                        <span class="timer-icon">⏳</span>
+                        <span id="hud-timer-value">2:00</span>
+                    </div>
+                    <button id="btn-touch-toggle" class="hud-btn" title="Toggle On-Screen Touch Controls">
+                        🎮 Touch UI
+                    </button>
+                    <button id="btn-mute-toggle" class="hud-btn" title="Toggle Lo-Fi Music & Sound">
+                        🎵 Music ON
+                    </button>
+                    <button id="btn-restart" class="hud-btn" title="Restart Current Level">
+                        🔄 Restart
+                    </button>
+                </div>
+            </header>
+
+            <!-- Status Alert Banner (Distraction Heart / Inverted Controls) -->
+            <div id="distract-banner" class="alert-banner hidden">
+                ⚡ DISTRACTED! CONTROLS INVERTED 💔
+            </div>
+
+            <!-- Proximity Action Prompt -->
+            <div id="present-prompt" class="action-prompt hidden">
+                🎁 Press <b>E</b> or Tap <b>[Present Gift]</b>!
+            </div>
+
+            <!-- Mobile Touch Controls -->
+            <div id="touch-controls">
+                <div class="touch-group dpad">
+                    <button id="btn-left" class="touch-btn" aria-label="Move Left">◀</button>
+                    <button id="btn-right" class="touch-btn" aria-label="Move Right">▶</button>
+                </div>
+                <div class="touch-group actions">
+                    <button id="btn-jump" class="touch-btn jump-btn" aria-label="Jump">▲ JUMP</button>
+                    <button id="btn-present" class="touch-btn present-btn" aria-label="Present Gift">🎁 GIFT</button>
+                </div>
+            </div>
+
+            <!-- Start / Instructions Screen Modal -->
+            <div id="start-screen-overlay" class="modal-backdrop">
+                <div class="modal-card pop-art-box">
+                    <div class="pop-art-badge">VIBRANT POP-ART QUEST</div>
+                    <h1 class="modal-heading">MODI & MELONI<br><span class="highlight-text">THE MELODY QUEST</span></h1>
+                    
+                    <div class="level-showcase-grid">
+                        <div class="showcase-card">
+                            <div class="showcase-level">Level 1 (Easy)</div>
+                            <div class="showcase-title">Parliament Gardens</div>
+                            <p>Collect <b>5 Melody Chocolates</b>. Avoid Rahul's patrol to deliver them to Meloni!</p>
+                        </div>
+                        <div class="showcase-card">
+                            <div class="showcase-level">Level 2 (Medium)</div>
+                            <div class="showcase-title">G7 Summit Corridor</div>
+                            <p>Collect <b>8 Chocolates</b>. Watch out for Rahul's tracking AI and Ramya's Distraction Hearts!</p>
+                        </div>
+                        <div class="showcase-card">
+                            <div class="showcase-level">Level 3 (Hard)</div>
+                            <div class="showcase-title">Cosmic Runway</div>
+                            <p>Dynamic shifting platforms! Dodge Confetti Blasts and reach <b>90%+ Impression within 2 minutes</b>!</p>
+                        </div>
+                        <div class="showcase-card">
+                            <div class="showcase-level">Level 4 (Finale)</div>
+                            <div class="showcase-title">Roman Rose Villa 🌹</div>
+                            <p>Collect <b>12 Blooming Red Roses</b> along Tuscan trellises & present them for ultimate romance!</p>
+                        </div>
+                    </div>
+
+                    <div class="controls-guide">
+                        <div class="guide-item">
+                            <span class="guide-key">A / D or ◀ ▶</span>
+                            <span class="guide-label">Move Modi</span>
+                        </div>
+                        <div class="guide-item">
+                            <span class="guide-key">W / Space or ▲</span>
+                            <span class="guide-label">Jump</span>
+                        </div>
+                        <div class="guide-item">
+                            <span class="guide-key">E or Enter or [🎁/🌹 GIFT]</span>
+                            <span class="guide-label">Present Melody / Roses</span>
+                        </div>
+                    </div>
+
+                    <button id="start-game-btn" class="pop-btn-primary">
+                        START THE QUEST 🚀
+                    </button>
+                </div>
+            </div>
+
+            <!-- Level Clear / Victory / Game Over Overlay Modal -->
+            <div id="modal-overlay" class="modal-backdrop hidden">
+                <div class="modal-card pop-art-box">
+                    <h2 id="modal-title" class="modal-heading">Level Complete!</h2>
+                    <p id="modal-desc" class="modal-text">Meloni was impressed with the delicious Melody Chocolates!</p>
+                    <button id="modal-btn" class="pop-btn-primary">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="audio.js"></script>
+    <script src="characters.js"></script>
+    <script src="levels.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
